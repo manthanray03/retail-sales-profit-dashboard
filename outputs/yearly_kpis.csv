@@ -1,0 +1,4 @@
+year,net_sales,gross_profit,gross_margin_pct,markdown_rate_pct,return_rate_pct,units_sold,net_sales_yoy_pct,gross_profit_yoy_pct,margin_change_pts,sales_target,target_attainment_pct
+2023,406053745.0,107629777.0,26.51,3.95,2.41,52482656,,,,410495000.0,98.92
+2024,425776098.0,114529020.0,26.9,3.64,2.38,54051756,4.86,6.41,0.39,424324000.0,100.34
+2025,444447570.0,121250256.0,27.28,3.34,2.37,55309103,4.39,5.87,0.38,444937000.0,99.89

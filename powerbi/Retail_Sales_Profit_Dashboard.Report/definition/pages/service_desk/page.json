@@ -1,0 +1,25 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "service_desk",
+  "displayName": "Customer Service Desk",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "service_desk_slicer_year",
+      "target": "p4_contacts_by_reason",
+      "type": "NoFilter"
+    },
+    {
+      "source": "service_desk_slicer_year",
+      "target": "p4_online_trend",
+      "type": "NoFilter"
+    },
+    {
+      "source": "service_desk_slicer_year",
+      "target": "p4_channel_mix",
+      "type": "NoFilter"
+    }
+  ]
+}

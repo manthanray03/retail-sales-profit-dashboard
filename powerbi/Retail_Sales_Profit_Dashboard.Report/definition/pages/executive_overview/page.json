@@ -1,0 +1,25 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "executive_overview",
+  "displayName": "Executive Overview",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "executive_overview_slicer_year",
+      "target": "p1_sales_by_year",
+      "type": "NoFilter"
+    },
+    {
+      "source": "executive_overview_slicer_year",
+      "target": "p1_margin_by_year",
+      "type": "NoFilter"
+    },
+    {
+      "source": "executive_overview_slicer_year",
+      "target": "p1_channel_mix",
+      "type": "NoFilter"
+    }
+  ]
+}

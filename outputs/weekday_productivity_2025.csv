@@ -1,0 +1,8 @@
+day_of_week_num,day_name,avg_net_sales_per_store,avg_transactions_per_store,avg_labour_hours_per_store,sales_per_labour_hour,transactions_per_labour_hour
+1,Mon,134075.0,1982.0,923.4,145.2,2.15
+2,Tue,129267.0,1950.0,916.9,140.99,2.13
+3,Wed,136362.0,2018.0,927.5,147.02,2.18
+4,Thu,146431.0,2151.0,947.1,154.61,2.27
+5,Fri,173943.0,2467.0,1004.0,173.26,2.46
+6,Sat,191655.0,2621.0,1032.9,185.55,2.54
+7,Sun,156844.0,2203.0,969.6,161.76,2.27

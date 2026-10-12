@@ -1,0 +1,298 @@
+// =============================================================================
+// measures.dax
+// Every DAX measure used in the report, grouped by display folder.
+//
+// How to use:
+//   1. In Power BI Desktop: Home > Enter data > name the table _Measures > Load.
+//   2. Select _Measures in the Data pane, then Table tools > New measure.
+//   3. Paste one measure at a time (everything from the name to the blank line).
+//   4. Set the format shown in the [Format: ...] comment above each measure.
+//   5. After all measures exist, delete the default "Column1" from _Measures;
+//      the table then moves to the top of the Data pane as a measure table.
+//
+// Names matter: BUILD_GUIDE.md and the visuals refer to these exact names.
+// =============================================================================
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 1 Sales
+// ---------------------------------------------------------------------------
+
+// [Format: Currency, 0 decimals]
+Net Sales = SUM ( fact_sales[net_sales] )
+
+// [Format: Currency, 0 decimals]
+Gross Sales = SUM ( fact_sales[gross_sales] )
+
+// [Format: Currency, 0 decimals]
+Markdowns = SUM ( fact_sales[markdown_amount] )
+
+// [Format: Currency, 0 decimals]
+COGS = SUM ( fact_sales[cogs] )
+
+// [Format: Currency, 0 decimals]
+Gross Profit = SUM ( fact_sales[gross_profit] )
+
+// [Format: Whole number, thousands separator]
+Units Sold = SUM ( fact_sales[units_sold] )
+
+// [Format: Currency, 0 decimals]
+Returns = SUM ( fact_sales[return_amount] )
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 2 Ratios
+// ---------------------------------------------------------------------------
+
+// [Format: Percentage, 1 decimal]
+Gross Margin % = DIVIDE ( [Gross Profit], [Net Sales] )
+
+// [Format: Percentage, 1 decimal]
+Markdown Rate % = DIVIDE ( [Markdowns], [Gross Sales] )
+
+// [Format: Percentage, 1 decimal]
+Return Rate % = DIVIDE ( [Returns], [Net Sales] )
+
+// Share of the departments currently visible (use in the department matrix)
+// [Format: Percentage, 1 decimal]
+Department Share % =
+DIVIDE (
+    [Net Sales],
+    CALCULATE ( [Net Sales], ALLSELECTED ( dim_department ) )
+)
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 3 Time Intelligence
+// Requires dim_date marked as a date table (Table tools > Mark as date table).
+// ---------------------------------------------------------------------------
+
+// [Format: Currency, 0 decimals]
+Net Sales PY = CALCULATE ( [Net Sales], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// Blank when there is no prior year (2023), so cards don't show a fake +100%
+// [Format: Currency, 0 decimals]
+Net Sales YoY =
+IF ( NOT ISBLANK ( [Net Sales PY] ), [Net Sales] - [Net Sales PY] )
+
+// [Format: Percentage, 1 decimal]
+Net Sales YoY % = DIVIDE ( [Net Sales] - [Net Sales PY], [Net Sales PY] )
+
+// [Format: Currency, 0 decimals]
+Gross Profit PY = CALCULATE ( [Gross Profit], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// [Format: Percentage, 1 decimal]
+Gross Profit YoY % = DIVIDE ( [Gross Profit] - [Gross Profit PY], [Gross Profit PY] )
+
+// [Format: Percentage, 1 decimal]
+Gross Margin % PY = CALCULATE ( [Gross Margin %], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// Margin change in percentage points, e.g. 26.9% -> 27.3% = +0.38 pts
+// [Format: Custom  +0.00" pts";-0.00" pts";0.00" pts"]
+Gross Margin Change (pts) =
+VAR CurrentMargin = [Gross Margin %]
+VAR PriorMargin = [Gross Margin % PY]
+RETURN
+    IF ( NOT ISBLANK ( PriorMargin ), ( CurrentMargin - PriorMargin ) * 100 )
+
+// [Format: Percentage, 1 decimal]
+Markdown Rate % PY = CALCULATE ( [Markdown Rate %], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// [Format: Currency, 0 decimals]
+Net Sales YTD = TOTALYTD ( [Net Sales], dim_date[date] )
+
+// [Format: Currency, 0 decimals]
+Net Sales PY YTD = CALCULATE ( [Net Sales YTD], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// Previous month, for month-over-month cards
+// [Format: Currency, 0 decimals]
+Net Sales PM = CALCULATE ( [Net Sales], DATEADD ( dim_date[date], -1, MONTH ) )
+
+// [Format: Percentage, 1 decimal]
+Net Sales MoM % = DIVIDE ( [Net Sales] - [Net Sales PM], [Net Sales PM] )
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 4 Targets
+// Targets are set per store per month, with no department or channel split,
+// so attainment always compares against total store sales.
+// ---------------------------------------------------------------------------
+
+// Total sales for the selected stores and dates, ignoring department and
+// channel filters. Used wherever a measure is compared to store-level data.
+// [Format: Currency, 0 decimals]
+Net Sales (All Depts & Channels) =
+CALCULATE (
+    [Net Sales],
+    REMOVEFILTERS ( dim_department ),
+    REMOVEFILTERS ( dim_channel )
+)
+
+// [Format: Currency, 0 decimals]
+Sales Target = SUM ( fact_targets[sales_target] )
+
+// [Format: Currency, 0 decimals]
+Variance to Target =
+IF (
+    NOT ISBLANK ( [Sales Target] ),
+    [Net Sales (All Depts & Channels)] - [Sales Target]
+)
+
+// [Format: Percentage, 1 decimal]
+Target Attainment % = DIVIDE ( [Net Sales (All Depts & Channels)], [Sales Target] )
+
+// Upper end of the gauge so the needle never pins at the edge
+// [Format: Currency, 0 decimals]
+Gauge Max = [Sales Target] * 1.2
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 5 Store Operations
+// ---------------------------------------------------------------------------
+
+// [Format: Whole number, thousands separator]
+Customer Transactions = SUM ( fact_store_day[customer_transactions] )
+
+// [Format: Decimal number, 0 decimals, thousands separator]
+Labour Hours = SUM ( fact_store_day[labour_hours] )
+
+// Transactions include every department and channel, so sales must too
+// [Format: Currency, 2 decimals]
+Average Basket = DIVIDE ( [Net Sales (All Depts & Channels)], [Customer Transactions] )
+
+// [Format: Currency, 2 decimals]
+Sales per Labour Hour = DIVIDE ( [Net Sales (All Depts & Channels)], [Labour Hours] )
+
+// [Format: Whole number]
+Store Rank by Net Sales =
+IF (
+    HASONEVALUE ( dim_store[store_name] ),
+    RANKX ( ALLSELECTED ( dim_store ), [Net Sales], , DESC, DENSE )
+)
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 6 Channels
+// ---------------------------------------------------------------------------
+
+// Always all online sales, even if the Channel slicer is set to one channel,
+// so the Online Share % card keeps working when someone filters by channel
+// [Format: Currency, 0 decimals]
+Online Sales =
+CALCULATE (
+    [Net Sales],
+    REMOVEFILTERS ( dim_channel ),
+    dim_channel[channel_group] = "Online"
+)
+
+// [Format: Percentage, 1 decimal]
+Online Share % =
+DIVIDE ( [Online Sales], CALCULATE ( [Net Sales], REMOVEFILTERS ( dim_channel ) ) )
+
+// [Format: Currency, 0 decimals]
+Online Sales PY = CALCULATE ( [Online Sales], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// [Format: Percentage, 1 decimal]
+Online Sales YoY % = DIVIDE ( [Online Sales] - [Online Sales PY], [Online Sales PY] )
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 7 Service Desk
+// ---------------------------------------------------------------------------
+
+// [Format: Whole number, thousands separator]
+Desk Contacts = SUM ( fact_service_desk[contacts] )
+
+// [Format: Whole number, thousands separator]
+Resolved First Contact = SUM ( fact_service_desk[resolved_first_contact] )
+
+// [Format: Percentage, 1 decimal]
+First Contact Resolution % = DIVIDE ( [Resolved First Contact], [Desk Contacts] )
+
+// [Format: Decimal number, 2 decimals]
+Avg Handle Time (min) =
+DIVIDE ( SUM ( fact_service_desk[total_handle_minutes] ), [Desk Contacts] )
+
+// Desk load relative to store traffic
+// [Format: Decimal number, 1 decimal]
+Contacts per 1K Transactions = DIVIDE ( [Desk Contacts], [Customer Transactions] ) * 1000
+
+// [Format: Whole number, thousands separator]
+Desk Contacts PY = CALCULATE ( [Desk Contacts], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+// [Format: Percentage, 1 decimal]
+Desk Contacts YoY % = DIVIDE ( [Desk Contacts] - [Desk Contacts PY], [Desk Contacts PY] )
+
+// Online order & delivery contacts only (trend line on the Service Desk page)
+// [Format: Whole number, thousands separator]
+Online Order Contacts =
+CALCULATE ( [Desk Contacts], fact_service_desk[contact_reason] = "Online order & delivery" )
+
+
+// ---------------------------------------------------------------------------
+// Display folder: 8 Labels & Formatting
+// Text measures for card subtitles, titles and conditional formatting.
+// ---------------------------------------------------------------------------
+
+// Card subtitle, e.g. "▲ 4.4% vs last year"
+Net Sales vs LY Label =
+VAR Change = [Net Sales YoY %]
+RETURN
+    IF (
+        ISBLANK ( Change ),
+        "No prior year in data",
+        IF ( Change >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( Change ), "0.0%" ) & " vs last year"
+    )
+
+Gross Profit vs LY Label =
+VAR Change = [Gross Profit YoY %]
+RETURN
+    IF (
+        ISBLANK ( Change ),
+        "No prior year in data",
+        IF ( Change >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( Change ), "0.0%" ) & " vs last year"
+    )
+
+Margin vs LY Label =
+VAR Change = [Gross Margin Change (pts)]
+RETURN
+    IF (
+        ISBLANK ( Change ),
+        "No prior year in data",
+        IF ( Change >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( Change ), "0.00" ) & " pts vs last year"
+    )
+
+Target vs Plan Label =
+VAR Gap = [Variance to Target]
+RETURN
+    IF (
+        ISBLANK ( Gap ),
+        BLANK (),
+        IF ( Gap >= 0, "▲ ", "▼ " )
+            & FORMAT ( ABS ( Gap ) / 1000000, "$#,0.0" ) & "M"
+            & IF ( Gap >= 0, " above plan", " below plan" )
+    )
+
+// Page subtitle that follows the Year slicer
+Selected Period =
+VAR FirstYear = MIN ( dim_date[year] )
+VAR LastYear = MAX ( dim_date[year] )
+RETURN
+    IF ( FirstYear = LastYear, "Year " & FirstYear, FirstYear & " to " & LastYear )
+
+// Font colour for YoY values: green up, red down, grey when there is no prior year
+YoY Colour =
+SWITCH (
+    TRUE (),
+    ISBLANK ( [Net Sales YoY %] ), "#898781",
+    [Net Sales YoY %] >= 0, "#006300",
+    "#D03B3B"
+)
+
+Attainment Colour =
+SWITCH (
+    TRUE (),
+    ISBLANK ( [Target Attainment %] ), "#898781",
+    [Target Attainment %] >= 1, "#006300",
+    "#D03B3B"
+)

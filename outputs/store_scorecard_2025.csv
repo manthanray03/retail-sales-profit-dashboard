@@ -1,0 +1,9 @@
+store_name,city,region,net_sales_2025,net_sales_yoy_pct,gross_margin_pct,sales_target_2025,target_attainment_pct,avg_basket,sales_per_labour_hour
+Saskatoon South,Saskatoon,Central,66894433.0,9.18,27.3,64030000.0,104.5,69.49,172.29
+Saskatoon East,Saskatoon,Central,74474416.0,4.59,27.26,74410000.0,100.1,69.36,160.53
+Regina Northwest,Regina,South,67457002.0,4.38,27.27,67531000.0,99.9,69.42,159.54
+Regina East,Regina,South,75673393.0,3.86,27.3,76141000.0,99.4,69.46,157.07
+Swift Current,Swift Current,South,34796205.0,3.81,27.28,35028000.0,99.3,69.33,157.53
+Moose Jaw,Moose Jaw,South,43733825.0,3.52,27.27,44147000.0,99.1,69.61,155.88
+Yorkton,Yorkton,Central,36833207.0,1.89,27.28,37775000.0,97.5,69.47,153.43
+Prince Albert,Prince Albert,North,44585090.0,1.56,27.28,45875000.0,97.2,69.24,149.81

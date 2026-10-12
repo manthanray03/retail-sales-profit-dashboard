@@ -1,0 +1,10 @@
+year,channel_name,net_sales,share_pct,gross_margin_pct,return_rate_pct
+2023,In-Store,355888971.0,87.65,26.72,2.35
+2023,Online Pickup,32424674.0,7.99,25.36,2.63
+2023,Online Delivery,17740100.0,4.37,24.32,3.23
+2024,In-Store,360909689.0,84.77,27.17,2.31
+2024,Online Pickup,41697576.0,9.79,25.77,2.58
+2024,Online Delivery,23168833.0,5.44,24.74,3.18
+2025,In-Store,364166230.0,81.94,27.61,2.28
+2025,Online Pickup,51334686.0,11.55,26.19,2.56
+2025,Online Delivery,28946654.0,6.51,25.13,3.13

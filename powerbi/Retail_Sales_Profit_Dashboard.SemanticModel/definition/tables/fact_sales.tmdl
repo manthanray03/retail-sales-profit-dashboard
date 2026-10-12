@@ -1,0 +1,98 @@
+table fact_sales
+
+	column date
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column store_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: store_id
+
+	column department_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: department_id
+
+	column channel_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: channel_id
+
+	column units_sold
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: units_sold
+
+	column gross_sales
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		summarizeBy: sum
+		sourceColumn: gross_sales
+
+	column markdown_amount
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		summarizeBy: sum
+		sourceColumn: markdown_amount
+
+	column net_sales
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		summarizeBy: sum
+		sourceColumn: net_sales
+
+	column cogs
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		summarizeBy: sum
+		sourceColumn: cogs
+
+	column gross_profit
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		summarizeBy: sum
+		sourceColumn: gross_profit
+
+	column return_units
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: return_units
+
+	column return_amount
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		summarizeBy: sum
+		sourceColumn: return_amount
+
+	partition fact_sales = m
+		mode: import
+		source =
+			let
+			    Source = Csv.Document(File.Contents(DataFolder & "fact_sales.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+			    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"date", type date}, {"store_id", Int64.Type}, {"department_id", Int64.Type}, {"channel_id", Int64.Type}, {"units_sold", Int64.Type}, {"gross_sales", Currency.Type}, {"markdown_amount", Currency.Type}, {"net_sales", Currency.Type}, {"cogs", Currency.Type}, {"gross_profit", Currency.Type}, {"return_units", Int64.Type}, {"return_amount", Currency.Type}}, "en-US")
+			in
+			    #"Changed Type"
+

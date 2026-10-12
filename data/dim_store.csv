@@ -1,0 +1,9 @@
+store_id,store_name,city,region,province,store_format,square_feet,open_year,latitude,longitude
+101,Regina East,Regina,South,SK,Supercentre,168000,2006,50.447,-104.533
+102,Regina Northwest,Regina,South,SK,Supercentre,152000,2011,50.493,-104.669
+103,Saskatoon East,Saskatoon,Central,SK,Supercentre,160000,2008,52.127,-106.577
+104,Saskatoon South,Saskatoon,Central,SK,Supercentre,145000,2019,52.086,-106.617
+105,Moose Jaw,Moose Jaw,South,SK,Supercentre,130000,2007,50.417,-105.504
+106,Prince Albert,Prince Albert,North,SK,Supercentre,135000,2005,53.185,-105.744
+107,Swift Current,Swift Current,South,SK,Discount Store,110000,2004,50.29,-107.77
+108,Yorkton,Yorkton,Central,SK,Discount Store,115000,2009,51.224,-102.44

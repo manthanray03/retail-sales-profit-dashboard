@@ -1,0 +1,9 @@
+department_id,department_name,department_group
+1,Grocery,Food
+2,Fresh Food,Food
+3,Consumables,Consumables & Health
+4,Health & Beauty,Consumables & Health
+5,Electronics,General Merchandise
+6,Home & Seasonal,General Merchandise
+7,Apparel,General Merchandise
+8,Toys & Sporting Goods,General Merchandise

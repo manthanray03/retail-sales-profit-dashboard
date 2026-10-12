@@ -1,0 +1,39 @@
+relationship 6062d2d6-4496-55fb-beea-d492d4077fdd
+	fromColumn: fact_sales.date
+	toColumn: dim_date.date
+
+relationship 2894f165-b771-56de-b0ca-6c4fa64c4838
+	fromColumn: fact_store_day.date
+	toColumn: dim_date.date
+
+relationship dd7c6573-cbdc-5b54-b855-b17257c2553d
+	fromColumn: fact_service_desk.date
+	toColumn: dim_date.date
+
+relationship 259c65c9-54e6-57e2-a201-58a282d715a4
+	fromColumn: fact_targets.month_start
+	toColumn: dim_date.date
+
+relationship 6b9d247b-d05d-5aa6-a2da-927035b2e250
+	fromColumn: fact_sales.store_id
+	toColumn: dim_store.store_id
+
+relationship 73013371-aa04-5f8c-bbd3-5a2fe330a09a
+	fromColumn: fact_store_day.store_id
+	toColumn: dim_store.store_id
+
+relationship 4898ce4f-43c5-509f-859a-3f5241cd6599
+	fromColumn: fact_service_desk.store_id
+	toColumn: dim_store.store_id
+
+relationship afb2ba23-b6af-5cb6-a3ab-01adb837e6d2
+	fromColumn: fact_targets.store_id
+	toColumn: dim_store.store_id
+
+relationship 4064710a-726c-53de-ae2e-85429cf8ea16
+	fromColumn: fact_sales.department_id
+	toColumn: dim_department.department_id
+
+relationship 846b6eec-425c-532b-b057-389df608cedd
+	fromColumn: fact_sales.channel_id
+	toColumn: dim_channel.channel_id
