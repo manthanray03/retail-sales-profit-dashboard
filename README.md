@@ -158,7 +158,6 @@ by hand. All measures are in [`powerbi/measures.dax`](powerbi/measures.dax), and
 | **Stores** | Store scorecard, plan attainment by store and sales per labour hour by weekday |
 | **Service Desk** | Contacts by reason and channel, first-contact resolution, handle time, online order trend |
 
-<!--
 ### Screenshots
 
 ![Executive Overview](images/powerbi/01_executive_overview.png)
@@ -168,7 +167,6 @@ by hand. All measures are in [`powerbi/measures.dax`](powerbi/measures.dax), and
 
 Files: [Retail_Sales_Profit_Dashboard.pbix](powerbi/Retail_Sales_Profit_Dashboard.pbix) ·
 [PDF export](powerbi/Retail_Sales_Profit_Dashboard.pdf)
--->
 
 **DAX highlights:** time intelligence (`SAMEPERIODLASTYEAR`, `TOTALYTD`, `DATEADD`),
 margin change in percentage points, plan attainment that ignores department and channel
