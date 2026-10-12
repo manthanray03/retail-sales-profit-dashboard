@@ -1,9 +1,11 @@
 table fact_sales
+	lineageTag: 639551b9-df5b-4dd5-8290-249bc0dfb9d5
 
 	column date
 		dataType: dateTime
 		isHidden
 		formatString: yyyy-mm-dd
+		lineageTag: 821e1add-784d-492c-9603-1b2accfdd206
 		summarizeBy: none
 		sourceColumn: date
 
@@ -13,6 +15,7 @@ table fact_sales
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: bbe69be9-7c02-45fa-a75f-0dc014bd0dc8
 		summarizeBy: none
 		sourceColumn: store_id
 
@@ -20,6 +23,7 @@ table fact_sales
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 20502890-e46d-45eb-9b41-fb988ecc8ee2
 		summarizeBy: none
 		sourceColumn: department_id
 
@@ -27,6 +31,7 @@ table fact_sales
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 7c2e44e2-6810-4192-a05c-7dd9441f41cd
 		summarizeBy: none
 		sourceColumn: channel_id
 
@@ -34,6 +39,7 @@ table fact_sales
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 3bc429bf-9d8a-45a9-a1fd-a7b62dd9df1f
 		summarizeBy: sum
 		sourceColumn: units_sold
 
@@ -41,6 +47,7 @@ table fact_sales
 		dataType: decimal
 		isHidden
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: e6da58b7-4ba9-4016-9a53-223234068e7f
 		summarizeBy: sum
 		sourceColumn: gross_sales
 
@@ -48,6 +55,7 @@ table fact_sales
 		dataType: decimal
 		isHidden
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: beefe7ef-3e32-4123-b590-e22d8411b4ff
 		summarizeBy: sum
 		sourceColumn: markdown_amount
 
@@ -55,6 +63,7 @@ table fact_sales
 		dataType: decimal
 		isHidden
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 5aa52031-cad3-4171-9a46-b1b5f202b399
 		summarizeBy: sum
 		sourceColumn: net_sales
 
@@ -62,6 +71,7 @@ table fact_sales
 		dataType: decimal
 		isHidden
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 1209dc3f-40f6-40ab-90a9-14435e629619
 		summarizeBy: sum
 		sourceColumn: cogs
 
@@ -69,6 +79,7 @@ table fact_sales
 		dataType: decimal
 		isHidden
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 8f89836e-8c01-4f70-8845-874555d776ca
 		summarizeBy: sum
 		sourceColumn: gross_profit
 
@@ -76,6 +87,7 @@ table fact_sales
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 1aae894b-69e3-472d-9251-882063d18ac3
 		summarizeBy: sum
 		sourceColumn: return_units
 
@@ -83,16 +95,17 @@ table fact_sales
 		dataType: decimal
 		isHidden
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 3fea1fdd-6b9a-449a-b97e-f3cd8696a401
 		summarizeBy: sum
 		sourceColumn: return_amount
 
 	partition fact_sales = m
 		mode: import
 		source =
-			let
-			    Source = Csv.Document(File.Contents(DataFolder & "fact_sales.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
-			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
-			    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"date", type date}, {"store_id", Int64.Type}, {"department_id", Int64.Type}, {"channel_id", Int64.Type}, {"units_sold", Int64.Type}, {"gross_sales", Currency.Type}, {"markdown_amount", Currency.Type}, {"net_sales", Currency.Type}, {"cogs", Currency.Type}, {"gross_profit", Currency.Type}, {"return_units", Int64.Type}, {"return_amount", Currency.Type}}, "en-US")
-			in
-			    #"Changed Type"
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_sales.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"date", type date}, {"store_id", Int64.Type}, {"department_id", Int64.Type}, {"channel_id", Int64.Type}, {"units_sold", Int64.Type}, {"gross_sales", Currency.Type}, {"markdown_amount", Currency.Type}, {"net_sales", Currency.Type}, {"cogs", Currency.Type}, {"gross_profit", Currency.Type}, {"return_units", Int64.Type}, {"return_amount", Currency.Type}}, "en-US")
+				in
+				    #"Changed Type"
 

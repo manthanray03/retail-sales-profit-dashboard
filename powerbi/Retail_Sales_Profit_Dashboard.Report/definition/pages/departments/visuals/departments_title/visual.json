@@ -1,11 +1,11 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "departments_title",
   "position": {
-    "x": 16,
-    "y": 10,
+    "x": 16.285714285714285,
+    "y": 10.285714285714285,
     "z": 1000,
-    "height": 40,
+    "height": 49.714285714285708,
     "width": 600,
     "tabOrder": 1000
   },
@@ -23,7 +23,7 @@
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "20pt",
-                      "color": "#0B0B0B"
+                      "color": "#0b0b0b"
                     }
                   }
                 ]

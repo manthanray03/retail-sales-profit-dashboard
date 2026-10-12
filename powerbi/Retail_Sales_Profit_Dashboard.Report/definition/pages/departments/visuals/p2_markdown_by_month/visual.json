@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "p2_markdown_by_month",
   "position": {
     "x": 436,
@@ -28,27 +28,8 @@
               },
               "queryRef": "dim_date.month_name",
               "nativeQueryRef": "month_name",
-              "displayName": "Month",
-              "active": true
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Markdown Rate %"
-                }
-              },
-              "queryRef": "_Measures.Markdown Rate %",
-              "nativeQueryRef": "Markdown Rate %",
-              "displayName": "Markdown rate"
+              "active": true,
+              "displayName": "Month"
             }
           ]
         },
@@ -70,6 +51,25 @@
               "displayName": "Year"
             }
           ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Markdown Rate %"
+                }
+              },
+              "queryRef": "_Measures.Markdown Rate %",
+              "nativeQueryRef": "Markdown Rate %",
+              "displayName": "Markdown rate"
+            }
+          ]
         }
       },
       "sortDefinition": {
@@ -87,11 +87,9 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -113,6 +111,7 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

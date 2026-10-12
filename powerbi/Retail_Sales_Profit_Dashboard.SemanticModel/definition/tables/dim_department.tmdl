@@ -1,29 +1,33 @@
 table dim_department
+	lineageTag: ec800151-6ae1-48a7-b2c5-c6c89cab39d1
 
 	column department_id
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 6686d05d-597b-464e-bd0a-6d68405fe134
 		summarizeBy: none
 		sourceColumn: department_id
 
 	column department_name
 		dataType: string
+		lineageTag: b3a8cbdb-d348-4098-ab6d-845f9fe54a5a
 		summarizeBy: none
 		sourceColumn: department_name
 
 	column department_group
 		dataType: string
+		lineageTag: 69675616-3c6f-40f2-bc50-0e9b3527eda7
 		summarizeBy: none
 		sourceColumn: department_group
 
 	partition dim_department = m
 		mode: import
 		source =
-			let
-			    Source = Csv.Document(File.Contents(DataFolder & "dim_department.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
-			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
-			    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"department_id", Int64.Type}, {"department_name", type text}, {"department_group", type text}}, "en-US")
-			in
-			    #"Changed Type"
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_department.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"department_id", Int64.Type}, {"department_name", type text}, {"department_group", type text}}, "en-US")
+				in
+				    #"Changed Type"
 

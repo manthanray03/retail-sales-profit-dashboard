@@ -11,6 +11,8 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_QueryOrder = ["DataFolder", "dim_date", "dim_store", "dim_department", "dim_channel", "fact_sales", "fact_store_day", "fact_service_desk", "fact_targets", "_Measures"]
 
+annotation PBI_ProTooling = ["DevMode"]
+
 ref table dim_date
 ref table dim_store
 ref table dim_department
@@ -20,3 +22,6 @@ ref table fact_store_day
 ref table fact_service_desk
 ref table fact_targets
 ref table _Measures
+
+ref cultureInfo en-US
+

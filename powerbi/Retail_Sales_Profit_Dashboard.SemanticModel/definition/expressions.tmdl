@@ -1,2 +1,5 @@
 expression DataFolder = "C:\retail-sales-profit-dashboard\data\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 74ebbe45-d473-4b5a-8b9d-09a87545a922
+
 	annotation PBI_ResultType = Text
+

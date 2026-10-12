@@ -37,3 +37,4 @@ relationship 4064710a-726c-53de-ae2e-85429cf8ea16
 relationship 846b6eec-425c-532b-b057-389df608cedd
 	fromColumn: fact_sales.channel_id
 	toColumn: dim_channel.channel_id
+

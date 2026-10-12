@@ -1,218 +1,258 @@
 table _Measures
+	lineageTag: aba17cad-85ae-4bd7-8b01-49c2d221fab2
 
 	measure 'Net Sales' = SUM ( fact_sales[net_sales] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: 65c5e77c-ee57-4bdb-815c-35465b92a7f8
 
 	measure 'Gross Sales' = SUM ( fact_sales[gross_sales] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: c8a919ea-39cf-4b98-a98f-533f6c06bec2
 
 	measure Markdowns = SUM ( fact_sales[markdown_amount] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: 01ae9fcc-8aa2-4527-9144-2eb3c0c1bb07
 
 	measure COGS = SUM ( fact_sales[cogs] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: 2fc73b52-afa6-4e1e-a758-244e9c45f532
 
 	measure 'Gross Profit' = SUM ( fact_sales[gross_profit] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: 026cd44e-54ec-4b5c-83ed-c31664c3b255
 
 	measure 'Units Sold' = SUM ( fact_sales[units_sold] )
 		formatString: #,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: 132eecdf-4a7d-4848-8d97-c218c9fcd59e
 
 	measure Returns = SUM ( fact_sales[return_amount] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "1 Sales"
+		displayFolder: 1 Sales
+		lineageTag: 067a8c07-3190-4ee6-82bf-5d2cad1263ff
 
 	measure 'Gross Margin %' = DIVIDE ( [Gross Profit], [Net Sales] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "2 Ratios"
+		displayFolder: 2 Ratios
+		lineageTag: 60a6084c-b21d-4487-95d3-0cc63a58d44c
 
 	measure 'Markdown Rate %' = DIVIDE ( [Markdowns], [Gross Sales] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "2 Ratios"
+		displayFolder: 2 Ratios
+		lineageTag: b024147c-d5b8-4b56-8bcc-d3d85692659b
 
 	measure 'Return Rate %' = DIVIDE ( [Returns], [Net Sales] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "2 Ratios"
+		displayFolder: 2 Ratios
+		lineageTag: e958b165-4d2e-48cc-9115-5154362a78d7
 
-	measure 'Department Share %' = ```
+	measure 'Department Share %' =
 			DIVIDE (
 			    [Net Sales],
 			    CALCULATE ( [Net Sales], ALLSELECTED ( dim_department ) )
 			)
-			```
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "2 Ratios"
+		displayFolder: 2 Ratios
+		lineageTag: 04a3cd32-9c55-49f3-ab6e-c3027ee8e1a5
 
 	measure 'Net Sales PY' = CALCULATE ( [Net Sales], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: ef52c6c6-6b7c-4e6c-8ca0-c2c0c2b5b5dc
 
 	measure 'Net Sales YoY' = IF ( NOT ISBLANK ( [Net Sales PY] ), [Net Sales] - [Net Sales PY] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: 1871f8c5-c721-4072-a275-9fb37f3bb532
 
 	measure 'Net Sales YoY %' = DIVIDE ( [Net Sales] - [Net Sales PY], [Net Sales PY] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: aec4612a-097e-42d3-ae58-b79d6ef5d48a
 
 	measure 'Gross Profit PY' = CALCULATE ( [Gross Profit], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: e435b3d9-dead-4748-b137-9081248908a3
 
 	measure 'Gross Profit YoY %' = DIVIDE ( [Gross Profit] - [Gross Profit PY], [Gross Profit PY] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: 3c721b1a-f865-4ee6-b8b4-d726573ad1c6
 
 	measure 'Gross Margin % PY' = CALCULATE ( [Gross Margin %], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: 4847aae7-eb4d-4967-9408-f1a30ebeb1ab
 
-	measure 'Gross Margin Change (pts)' = ```
+	measure 'Gross Margin Change (pts)' =
 			VAR CurrentMargin = [Gross Margin %]
 			VAR PriorMargin = [Gross Margin % PY]
 			RETURN
 			    IF ( NOT ISBLANK ( PriorMargin ), ( CurrentMargin - PriorMargin ) * 100 )
-			```
-		formatString: "+0.00"" pts"";-0.00"" pts"";0.00"" pts"""
-		displayFolder: "3 Time Intelligence"
+		formatString: +0.00" pts";-0.00" pts";0.00" pts"
+		displayFolder: 3 Time Intelligence
+		lineageTag: f9b77ada-543b-410b-b901-36ae4c2ae38b
 
 	measure 'Markdown Rate % PY' = CALCULATE ( [Markdown Rate %], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: 4aea6fbb-a0f2-4384-b5a8-9f62edcdc6ca
 
 	measure 'Net Sales YTD' = TOTALYTD ( [Net Sales], dim_date[date] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: ce0633ba-a1fd-44f9-ae3a-7c840bda011e
 
 	measure 'Net Sales PY YTD' = CALCULATE ( [Net Sales YTD], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: a5c970ee-72c6-43bb-881c-58fb860f8082
 
 	measure 'Net Sales PM' = CALCULATE ( [Net Sales], DATEADD ( dim_date[date], -1, MONTH ) )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: a95bdb4b-b69f-470e-931c-af41bf9e821d
 
 	measure 'Net Sales MoM %' = DIVIDE ( [Net Sales] - [Net Sales PM], [Net Sales PM] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "3 Time Intelligence"
+		displayFolder: 3 Time Intelligence
+		lineageTag: cbbe8ce0-5ead-46e3-8970-e2bf2a200b53
 
-	measure 'Net Sales (All Depts & Channels)' = ```
+	measure 'Net Sales (All Depts & Channels)' =
 			CALCULATE (
 			    [Net Sales],
 			    REMOVEFILTERS ( dim_department ),
 			    REMOVEFILTERS ( dim_channel )
 			)
-			```
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "4 Targets"
+		displayFolder: 4 Targets
+		lineageTag: e01a1194-9d19-48e9-8fea-6e1a32aaf338
 
 	measure 'Sales Target' = SUM ( fact_targets[sales_target] )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "4 Targets"
+		displayFolder: 4 Targets
+		lineageTag: 93d1e58d-8684-4766-9f7b-ea8fc9570855
 
-	measure 'Variance to Target' = ```
+	measure 'Variance to Target' =
 			IF (
 			    NOT ISBLANK ( [Sales Target] ),
 			    [Net Sales (All Depts & Channels)] - [Sales Target]
 			)
-			```
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "4 Targets"
+		displayFolder: 4 Targets
+		lineageTag: 8139e062-bcba-48dd-9e14-74c8091578c5
 
 	measure 'Target Attainment %' = DIVIDE ( [Net Sales (All Depts & Channels)], [Sales Target] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "4 Targets"
+		displayFolder: 4 Targets
+		lineageTag: 4d0fd95e-3791-4f20-a860-d0852a0c196b
 
 	measure 'Gauge Max' = [Sales Target] * 1.2
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "4 Targets"
+		displayFolder: 4 Targets
+		lineageTag: 9889d40e-cec6-4aae-bda5-0e7a80ac9c8d
 
 	measure 'Customer Transactions' = SUM ( fact_store_day[customer_transactions] )
 		formatString: #,0
-		displayFolder: "5 Store Operations"
+		displayFolder: 5 Store Operations
+		lineageTag: a2b3804b-62fd-4825-aee1-eb9e0aacd539
 
 	measure 'Labour Hours' = SUM ( fact_store_day[labour_hours] )
 		formatString: #,0
-		displayFolder: "5 Store Operations"
+		displayFolder: 5 Store Operations
+		lineageTag: 268924f3-53c5-4ca8-8016-da9fb7b1e7cd
 
 	measure 'Average Basket' = DIVIDE ( [Net Sales (All Depts & Channels)], [Customer Transactions] )
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		displayFolder: "5 Store Operations"
+		displayFolder: 5 Store Operations
+		lineageTag: 39776d0f-e5d0-4479-b69c-2d5c9192e469
 
 	measure 'Sales per Labour Hour' = DIVIDE ( [Net Sales (All Depts & Channels)], [Labour Hours] )
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		displayFolder: "5 Store Operations"
+		displayFolder: 5 Store Operations
+		lineageTag: 73efdae1-2895-4abe-848b-7b03afc77c4d
 
-	measure 'Store Rank by Net Sales' = ```
+	measure 'Store Rank by Net Sales' =
 			IF (
 			    HASONEVALUE ( dim_store[store_name] ),
 			    RANKX ( ALLSELECTED ( dim_store ), [Net Sales], , DESC, DENSE )
 			)
-			```
 		formatString: 0
-		displayFolder: "5 Store Operations"
+		displayFolder: 5 Store Operations
+		lineageTag: 7f00b6a0-fc38-4b57-8eae-f12a293b62aa
 
-	measure 'Online Sales' = ```
+	measure 'Online Sales' =
 			CALCULATE (
 			    [Net Sales],
 			    REMOVEFILTERS ( dim_channel ),
 			    dim_channel[channel_group] = "Online"
 			)
-			```
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "6 Channels"
+		displayFolder: 6 Channels
+		lineageTag: 0473464a-e467-4c97-9df3-0102399a47c9
 
 	measure 'Online Share %' = DIVIDE ( [Online Sales], CALCULATE ( [Net Sales], REMOVEFILTERS ( dim_channel ) ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "6 Channels"
+		displayFolder: 6 Channels
+		lineageTag: 8e06250d-5163-4b14-80b6-24358a680a60
 
 	measure 'Online Sales PY' = CALCULATE ( [Online Sales], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: \$#,0;(\$#,0);\$#,0
-		displayFolder: "6 Channels"
+		displayFolder: 6 Channels
+		lineageTag: 0439a3de-467e-4cb7-83f2-9be60f977040
 
 	measure 'Online Sales YoY %' = DIVIDE ( [Online Sales] - [Online Sales PY], [Online Sales PY] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "6 Channels"
+		displayFolder: 6 Channels
+		lineageTag: 3671cad3-7647-4db7-b721-21cb36080653
 
 	measure 'Desk Contacts' = SUM ( fact_service_desk[contacts] )
 		formatString: #,0
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: 58576816-f7f2-4bdf-916a-b362e345589e
 
 	measure 'Resolved First Contact' = SUM ( fact_service_desk[resolved_first_contact] )
 		formatString: #,0
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: dda87403-8426-4071-93ff-8cc9c6568eec
 
 	measure 'First Contact Resolution %' = DIVIDE ( [Resolved First Contact], [Desk Contacts] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: cc39ca44-355c-47fe-aa64-bac92bb46e68
 
 	measure 'Avg Handle Time (min)' = DIVIDE ( SUM ( fact_service_desk[total_handle_minutes] ), [Desk Contacts] )
 		formatString: 0.00
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: 89f68f3c-8def-4a95-97fd-fe27c34f1efa
 
 	measure 'Contacts per 1K Transactions' = DIVIDE ( [Desk Contacts], [Customer Transactions] ) * 1000
 		formatString: 0.0
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: abaa93b3-5922-446d-afda-078c39da3ba1
 
 	measure 'Desk Contacts PY' = CALCULATE ( [Desk Contacts], SAMEPERIODLASTYEAR ( dim_date[date] ) )
 		formatString: #,0
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: eeb47ee2-8dc1-4946-8879-74ca559f5f89
 
 	measure 'Desk Contacts YoY %' = DIVIDE ( [Desk Contacts] - [Desk Contacts PY], [Desk Contacts PY] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: 113ba9ed-8479-449d-9707-7c01a72ecad2
 
 	measure 'Online Order Contacts' = CALCULATE ( [Desk Contacts], fact_service_desk[contact_reason] = "Online order & delivery" )
 		formatString: #,0
-		displayFolder: "7 Service Desk"
+		displayFolder: 7 Service Desk
+		lineageTag: 0c798dd4-7b51-4946-b57f-cddcc2c22755
 
-	measure 'Net Sales vs LY Label' = ```
+	measure 'Net Sales vs LY Label' =
 			VAR Change = [Net Sales YoY %]
 			RETURN
 			    IF (
@@ -220,10 +260,10 @@ table _Measures
 			        "No prior year in data",
 			        IF ( Change >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( Change ), "0.0%" ) & " vs last year"
 			    )
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: e8bdf2cf-0f14-4045-a3e0-c03c6fa133ac
 
-	measure 'Gross Profit vs LY Label' = ```
+	measure 'Gross Profit vs LY Label' =
 			VAR Change = [Gross Profit YoY %]
 			RETURN
 			    IF (
@@ -231,10 +271,10 @@ table _Measures
 			        "No prior year in data",
 			        IF ( Change >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( Change ), "0.0%" ) & " vs last year"
 			    )
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: 3e36f55d-5ba1-4152-b63d-e9923001c42a
 
-	measure 'Margin vs LY Label' = ```
+	measure 'Margin vs LY Label' =
 			VAR Change = [Gross Margin Change (pts)]
 			RETURN
 			    IF (
@@ -242,10 +282,10 @@ table _Measures
 			        "No prior year in data",
 			        IF ( Change >= 0, "▲ ", "▼ " ) & FORMAT ( ABS ( Change ), "0.00" ) & " pts vs last year"
 			    )
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: e9f37be3-0330-4a93-bcf3-4e12783e99a7
 
-	measure 'Target vs Plan Label' = ```
+	measure 'Target vs Plan Label' =
 			VAR Gap = [Variance to Target]
 			RETURN
 			    IF (
@@ -255,48 +295,49 @@ table _Measures
 			            & FORMAT ( ABS ( Gap ) / 1000000, "$#,0.0" ) & "M"
 			            & IF ( Gap >= 0, " above plan", " below plan" )
 			    )
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: f7014c30-df99-4f3d-a306-6d8f8faf7595
 
-	measure 'Selected Period' = ```
+	measure 'Selected Period' =
 			VAR FirstYear = MIN ( dim_date[year] )
 			VAR LastYear = MAX ( dim_date[year] )
 			RETURN
 			    IF ( FirstYear = LastYear, "Year " & FirstYear, FirstYear & " to " & LastYear )
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: 67cfe200-4d43-4c0f-9352-dc5b7f7e37ca
 
-	measure 'YoY Colour' = ```
+	measure 'YoY Colour' =
 			SWITCH (
 			    TRUE (),
 			    ISBLANK ( [Net Sales YoY %] ), "#898781",
 			    [Net Sales YoY %] >= 0, "#006300",
 			    "#D03B3B"
 			)
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: 5e96b57c-559f-4cdc-ba62-6ddc7604361a
 
-	measure 'Attainment Colour' = ```
+	measure 'Attainment Colour' =
 			SWITCH (
 			    TRUE (),
 			    ISBLANK ( [Target Attainment %] ), "#898781",
 			    [Target Attainment %] >= 1, "#006300",
 			    "#D03B3B"
 			)
-			```
-		displayFolder: "8 Labels & Formatting"
+		displayFolder: 8 Labels & Formatting
+		lineageTag: 531ad378-4d3b-4131-83db-3f315a491754
 
 	column Value
 		dataType: string
 		isHidden
+		lineageTag: 0f73c4b6-39c7-4126-aef2-66a44df305e8
 		summarizeBy: none
 		sourceColumn: Value
 
 	partition _Measures = m
 		mode: import
 		source =
-			let
-			    Source = #table(type table [Value = text], {})
-			in
-			    Source
+				let
+				    Source = #table(type table [Value = text], {})
+				in
+				    Source
 

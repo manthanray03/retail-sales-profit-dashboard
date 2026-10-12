@@ -1,10 +1,12 @@
 table dim_date
+	lineageTag: 4646438b-8a23-4e52-8eb9-68a0ded0e961
 	dataCategory: Time
 
 	column date
 		dataType: dateTime
 		isKey
 		formatString: yyyy-mm-dd
+		lineageTag: 52f8e518-fd5e-41e9-be3c-f497a9abebd8
 		summarizeBy: none
 		sourceColumn: date
 
@@ -13,6 +15,7 @@ table dim_date
 	column year
 		dataType: int64
 		formatString: 0
+		lineageTag: 12523290-51bd-497a-87e8-d31f8e6edb8e
 		summarizeBy: none
 		sourceColumn: year
 
@@ -20,11 +23,13 @@ table dim_date
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 4378a19d-f22e-421f-8488-3aa78b0ae636
 		summarizeBy: none
 		sourceColumn: quarter_num
 
 	column quarter
 		dataType: string
+		lineageTag: b9d26f8b-56c7-4976-bcfe-294d0287cff9
 		summarizeBy: none
 		sourceColumn: quarter
 		sortByColumn: quarter_num
@@ -33,17 +38,20 @@ table dim_date
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: cbbc60e0-d7a9-4cce-9910-363641c94ecc
 		summarizeBy: none
 		sourceColumn: month_num
 
 	column month_name
 		dataType: string
+		lineageTag: acdbdcdc-7415-49fa-81ce-c41361acd050
 		summarizeBy: none
 		sourceColumn: month_name
 		sortByColumn: month_num
 
 	column month_year
 		dataType: string
+		lineageTag: 6b156223-9eba-49ac-8ece-9d62ffe951a4
 		summarizeBy: none
 		sourceColumn: month_year
 		sortByColumn: year_month
@@ -52,12 +60,14 @@ table dim_date
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: dc534b91-2de5-4cf8-bb24-5a61866e1a48
 		summarizeBy: none
 		sourceColumn: year_month
 
 	column month_start
 		dataType: dateTime
 		formatString: yyyy-mm-dd
+		lineageTag: 1eb76abb-8f0d-4c38-8e52-2995baa30332
 		summarizeBy: none
 		sourceColumn: month_start
 
@@ -66,6 +76,7 @@ table dim_date
 	column iso_week
 		dataType: int64
 		formatString: 0
+		lineageTag: a2af0e8a-d0b7-4a68-867a-c4d611937e17
 		summarizeBy: none
 		sourceColumn: iso_week
 
@@ -73,11 +84,13 @@ table dim_date
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 3aa07a1d-3e5a-4058-afde-cd5320f84e20
 		summarizeBy: none
 		sourceColumn: day_of_week_num
 
 	column day_name
 		dataType: string
+		lineageTag: a61a4ec0-0425-461a-b583-aaeb88f7c1de
 		summarizeBy: none
 		sourceColumn: day_name
 		sortByColumn: day_of_week_num
@@ -85,21 +98,23 @@ table dim_date
 	column is_weekend
 		dataType: int64
 		formatString: 0
+		lineageTag: a439d50a-e426-4a5c-b54e-fe25dc0e4ee1
 		summarizeBy: none
 		sourceColumn: is_weekend
 
 	column holiday_event
 		dataType: string
+		lineageTag: 541ad510-0370-4cdb-89bc-078ce67b7b1f
 		summarizeBy: none
 		sourceColumn: holiday_event
 
 	partition dim_date = m
 		mode: import
 		source =
-			let
-			    Source = Csv.Document(File.Contents(DataFolder & "dim_date.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
-			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
-			    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"date", type date}, {"year", Int64.Type}, {"quarter_num", Int64.Type}, {"quarter", type text}, {"month_num", Int64.Type}, {"month_name", type text}, {"month_year", type text}, {"year_month", Int64.Type}, {"month_start", type date}, {"iso_week", Int64.Type}, {"day_of_week_num", Int64.Type}, {"day_name", type text}, {"is_weekend", Int64.Type}, {"holiday_event", type text}}, "en-US")
-			in
-			    #"Changed Type"
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_date.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"date", type date}, {"year", Int64.Type}, {"quarter_num", Int64.Type}, {"quarter", type text}, {"month_num", Int64.Type}, {"month_name", type text}, {"month_year", type text}, {"year_month", Int64.Type}, {"month_start", type date}, {"iso_week", Int64.Type}, {"day_of_week_num", Int64.Type}, {"day_name", type text}, {"is_weekend", Int64.Type}, {"holiday_event", type text}}, "en-US")
+				in
+				    #"Changed Type"
 
